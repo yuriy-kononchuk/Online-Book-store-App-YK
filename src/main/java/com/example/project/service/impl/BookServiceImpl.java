@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BookServiceImpl implements BookService {
-    @Autowired //?? or condtrucror
     private final BookRepository bookRepository;
 
-    @Autowired //?? or field
+    @Autowired
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
