@@ -1,8 +1,10 @@
 package com.example.project.repository.impl;
 
+import com.example.project.exception.EntityNotFoundException;
 import com.example.project.model.Book;
 import com.example.project.repository.BookRepository;
 import java.util.List;
+import java.util.Optional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -26,14 +28,14 @@ public class BookRepositoryImpl implements BookRepository {
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.save(book);
+            session.persist(book);
             transaction.commit();
             return book;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't save book to DB :" + book, e);
+            throw new RuntimeException("Can't save a book to DB :" + book, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -47,7 +49,16 @@ public class BookRepositoryImpl implements BookRepository {
             Query<Book> getAllBooksQuery = session.createQuery("FROM Book", Book.class);
             return getAllBooksQuery.getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Can't get all books from DB", e);
+            throw new EntityNotFoundException("Can't get all books from DB", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.get(Book.class, id));
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Can't get a book by id: " + id, e);
         }
     }
 }

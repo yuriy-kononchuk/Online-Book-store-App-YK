@@ -1,5 +1,8 @@
 package com.example.project.service.impl;
 
+import com.example.project.dto.BookDto;
+import com.example.project.dto.CreateBookRequestDto;
+import com.example.project.mapper.BookMapper;
 import com.example.project.model.Book;
 import com.example.project.repository.BookRepository;
 import com.example.project.service.BookService;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private BookMapper bookMapper;
 
     @Autowired
     public BookServiceImpl(BookRepository bookRepository) {
@@ -17,12 +21,21 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book save(Book book) {
-        return bookRepository.save(book);
+    public BookDto save(CreateBookRequestDto requestDto) {
+        Book book = bookMapper.convertToModel(requestDto);
+        return bookMapper.convertToDto(bookRepository.save(book));
     }
 
     @Override
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<BookDto> findAll() {
+        return bookRepository.findAll().stream()
+                .map(b -> bookMapper.convertToDto(b))
+                .toList();
+    }
+
+    @Override
+    public BookDto findById(Long id) {
+        Book book = bookRepository.findById(id).get();
+        return bookMapper.convertToDto(book);
     }
 }
