@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.dto.BookDto;
 import com.example.project.dto.CreateBookRequestDto;
+import com.example.project.dto.BookSearchParameters;
 import com.example.project.service.BookService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,10 @@ public class BookController {
     @PutMapping("/{id}")
     public void uodateBookById(@PathVariable Long id) {
         bookService.updateById(id);
+    }
+
+    @GetMapping("/search")
+    public List<BookDto> searchForBooks(BookSearchParameters searchParameters) {
+        return bookService.searchForBooks(searchParameters);
     }
 }

@@ -6,7 +6,6 @@ import com.example.project.mapper.BookMapper;
 import com.example.project.model.Book;
 import com.example.project.repository.BookRepository;
 import com.example.project.service.BookService;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,14 +29,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> findAll() {
         return bookRepository.findAll().stream()
-                .map(book -> bookMapper.convertToDto(book))
+                .map(b -> bookMapper.convertToDto(b))
                 .toList();
     }
 
     @Override
     public BookDto findById(Long id) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Can't find a book by id: " + id));
+        Book book = bookRepository.findById(id).get();
         return bookMapper.convertToDto(book);
     }
 
@@ -48,8 +46,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void updateById(Long id) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Can't find a book by id: " + id));
-        bookRepository.save(book);
+        if (bookRepository.existsById(id)) {
+            bookRepository.save(bookRepository.findById(id).get());
+        }
     }
 }
