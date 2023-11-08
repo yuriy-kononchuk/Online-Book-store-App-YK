@@ -22,16 +22,13 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    @Column(nullable = false)
     private String title;
     @NotNull
-    @Column(nullable = false)
     private String author;
     @NotNull
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String isbn;
     @NotNull
-    @Column(nullable = false)
     private BigDecimal price;
     private String description;
     @Column(name = "cover_image")

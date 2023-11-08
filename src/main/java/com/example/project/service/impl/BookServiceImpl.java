@@ -4,15 +4,20 @@ import com.example.project.dto.BookDto;
 import com.example.project.dto.CreateBookRequestDto;
 import com.example.project.mapper.BookMapper;
 import com.example.project.model.Book;
-import com.example.project.repository.BookRepository;
+import com.example.project.repository.book.BookRepository;
+import com.example.project.dto.BookSearchParameters;
+import com.example.project.repository.book.BookSpecificationBuilder;
 import com.example.project.service.BookService;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private BookSpecificationBuilder bookSpecificationBuilder;
     private BookMapper bookMapper;
 
     @Autowired
@@ -29,13 +34,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> findAll() {
         return bookRepository.findAll().stream()
-                .map(b -> bookMapper.convertToDto(b))
+                .map(book -> bookMapper.convertToDto(book))
                 .toList();
     }
 
     @Override
     public BookDto findById(Long id) {
-        Book book = bookRepository.findById(id).get();
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Can't find a book by id: " + id));
         return bookMapper.convertToDto(book);
     }
 
@@ -46,8 +52,16 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void updateById(Long id) {
-        if (bookRepository.existsById(id)) {
-            bookRepository.save(bookRepository.findById(id).get());
-        }
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Can't find a book by id: " + id));
+        bookRepository.save(book);
+    }
+
+    @Override
+    public List<BookDto> searchForBooks(BookSearchParameters searchParameters) {
+        Specification<Book> bookSpecification = bookSpecificationBuilder.build(searchParameters);
+        return bookRepository.findAll(bookSpecification).stream()
+                .map(bookMapper::convertToDto)
+                .toList();
     }
 }
