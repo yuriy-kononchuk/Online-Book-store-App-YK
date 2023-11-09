@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import lombok.Data;
@@ -22,13 +23,17 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
+    @Column(nullable = false)
     private String title;
     @NotNull
+    @Column(nullable = false)
     private String author;
     @NotNull
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String isbn;
     @NotNull
+    @Min(value = 0)
+    @Column(nullable = false)
     private BigDecimal price;
     private String description;
     @Column(name = "cover_image")
