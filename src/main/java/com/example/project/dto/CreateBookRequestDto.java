@@ -2,6 +2,7 @@ package com.example.project.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import lombok.Data;
@@ -9,11 +10,11 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateBookRequestDto {
-    @NotNull
+    @NotEmpty
     private String title;
-    @NotNull
+    @NotEmpty
     private String author;
-    @NotNull
+    @NotEmpty
     private String isbn;
     @NotNull
     @Min(value = 0)
