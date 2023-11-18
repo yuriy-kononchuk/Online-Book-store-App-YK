@@ -56,4 +56,17 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         bodyToResponce.put("message", ex.getMessage());
         return new ResponseEntity<>(bodyToResponce, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {RegistrationException.class})
+    protected ResponseEntity<Object> handlRegistrationException(
+            EntityNotFoundException ex,
+            WebRequest request
+    ) {
+        Map<String, Object> bodyToResponce = new LinkedHashMap<>();
+        bodyToResponce.put("timestamp", LocalDateTime.now());
+        bodyToResponce.put("status", HttpStatus.UNAUTHORIZED.value());
+        bodyToResponce.put("error", ex.getClass() + " Unauthorized access");
+        bodyToResponce.put("message", ex.getMessage());
+        return new ResponseEntity<>(bodyToResponce, HttpStatus.UNAUTHORIZED);
+    }
 }

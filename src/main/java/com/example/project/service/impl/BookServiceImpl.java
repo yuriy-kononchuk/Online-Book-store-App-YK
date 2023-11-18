@@ -1,8 +1,8 @@
 package com.example.project.service.impl;
 
-import com.example.project.dto.BookDto;
-import com.example.project.dto.BookSearchParameters;
-import com.example.project.dto.CreateBookRequestDto;
+import com.example.project.dto.book.BookDto;
+import com.example.project.dto.book.BookSearchParameters;
+import com.example.project.dto.book.CreateBookRequestDto;
 import com.example.project.mapper.BookMapper;
 import com.example.project.model.Book;
 import com.example.project.repository.book.BookRepository;

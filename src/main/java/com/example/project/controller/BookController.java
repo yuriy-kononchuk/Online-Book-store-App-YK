@@ -1,8 +1,8 @@
 package com.example.project.controller;
 
-import com.example.project.dto.BookDto;
-import com.example.project.dto.BookSearchParameters;
-import com.example.project.dto.CreateBookRequestDto;
+import com.example.project.dto.book.BookDto;
+import com.example.project.dto.book.BookSearchParameters;
+import com.example.project.dto.book.CreateBookRequestDto;
 import com.example.project.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
