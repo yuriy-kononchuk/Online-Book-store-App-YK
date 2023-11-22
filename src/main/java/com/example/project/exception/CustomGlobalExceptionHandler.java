@@ -58,7 +58,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler(value = {RegistrationException.class})
-    protected ResponseEntity<Object> handlRegistrationException(
+    protected ResponseEntity<Object> handleRegistrationException(
             EntityNotFoundException ex,
             WebRequest request
     ) {

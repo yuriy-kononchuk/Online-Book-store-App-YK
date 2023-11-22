@@ -5,15 +5,17 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PasswordMatchesValidator implements ConstraintValidator<FieldMatch, Object> {
+public class PasswordMatchesValidator implements ConstraintValidator<FieldMatch,
+        UserRegistrationRequestDto> {
 
     @Override
     public void initialize(FieldMatch constraintAnnotation) {
     }
 
     @Override
-    public boolean isValid(Object value, ConstraintValidatorContext context) {
-        UserRegistrationRequestDto requestDto = (UserRegistrationRequestDto) value;
+    public boolean isValid(UserRegistrationRequestDto request, ConstraintValidatorContext context) {
+        //UserRegistrationRequestDto requestDto = (UserRegistrationRequestDto) value;
+        UserRegistrationRequestDto requestDto = request;
         return requestDto.getPassword().equals(requestDto.getRepeatPassword());
     }
 }

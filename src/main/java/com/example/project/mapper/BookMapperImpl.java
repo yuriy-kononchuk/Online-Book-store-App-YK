@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookMapperImpl implements BookMapper {
     @Override
-    public BookDto convertToDto(Book book) {
+    public BookDto toDto(Book book) {
         BookDto dto = new BookDto();
         dto.setId(book.getId());
         dto.setTitle(book.getTitle());
@@ -21,7 +21,7 @@ public class BookMapperImpl implements BookMapper {
     }
 
     @Override
-    public Book convertToModel(CreateBookRequestDto requestDto) {
+    public Book toModel(CreateBookRequestDto requestDto) {
         Book book = new Book();
         book.setTitle(requestDto.getTitle());
         book.setAuthor(requestDto.getAuthor());

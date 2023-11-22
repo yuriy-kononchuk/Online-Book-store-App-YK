@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-users
+      author: Yuriy Kononchuk
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column: {name: id, value: "1"}
+              - column: {name: email, value: "admin@example.com"}
+              - column: {name: password, value: "$2a$10$IVfYmk5GBDmPXIcVlhqPmOoNLKUTdtIW3LbibkVDxikAPlkwN/p.2"} #Bcrypted: 12345678
+              - column: {name: first_name, value: "Yuriy"}
+              - column: {name: last_name, value: "Kononchuk"}
+              - column: {name: shipping_address, value: "Lviv, Petliury str."}
+        - insert:
+            tableName: users
+            columns:
+              - column: {name: id, value: "2"}
+              - column: {name: email, value: "testuser@example.com"}
+              - column: {name: password, value: "$2a$10$pbqkWMAn4zEuPCcX/V.e7eWmnrtIW5lUbS5rCFQpug72YurOxPVo." } #Bcrypted: 12344321
+              - column: {name: first_name, value: "Student"}
+              - column: {name: last_name, value: "Mate"}
+              - column: {name: shipping_address, value: "Lviv, Bandery str."}
+

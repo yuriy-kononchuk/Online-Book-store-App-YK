@@ -7,5 +7,5 @@ import com.example.project.model.User;
 public interface UserMapper {
     UserResponseDto toUserResponse(User user);
 
-    User convertToModel(UserRegistrationRequestDto userDto);
+    User toModel(UserRegistrationRequestDto userDto);
 }

@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             throw new RegistrationException("Can't register a user");
         }
-        User user = userMapper.convertToModel(requestDto);
+        User user = userMapper.toModel(requestDto);
         return userMapper.toUserResponse(userRepository.save(user));
     }
 }
