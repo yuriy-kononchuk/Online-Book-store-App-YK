@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-roles
+      author: Yuriy Kononchuk
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column: {name: id, value: "1"}
+              - column: {name: name, value: "admin"}
+        - insert:
+            tableName: roles
+            columns:
+              - column: { name: id, value: "2" }
+              - column: { name: name, value: "user" }
