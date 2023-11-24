@@ -18,7 +18,6 @@
 		<lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<maven.checkstyle.plugin.configLocation>checkstyle.xml</maven.checkstyle.plugin.configLocation>
-
 	</properties>
 	<dependencies>
 		<dependency>
@@ -114,11 +113,13 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
 			<version>0.11.5</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 	<build>

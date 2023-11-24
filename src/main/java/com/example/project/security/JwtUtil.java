@@ -15,10 +15,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtil {
     private Key secretKey;
-    @Value("${jwt.expiration}")
-    private Long expPeriod;
+    @Value("600000") //Why it does not activate if using from application.properties?
+    private long expPeriod;
 
-    public JwtUtil(@Value("${jwt.secret}") String secret) {
+    public JwtUtil(@Value("victoryforukraineandnevergiveupglorytoukraineglorytoheroes")
+                   String secret) { //Why it does not activate if using from application.properties?
         secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
