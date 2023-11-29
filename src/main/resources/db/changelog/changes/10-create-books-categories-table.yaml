@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create books-categories-table
+      author: Yuriy Kononchuk
+      changes:
+        - createTable:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  type: bigint
+                  autoIncrement: false
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: bigint
+                  autoIncrement: false
+                  constraints:
+                    primaryKey: false
+                    nullable: false

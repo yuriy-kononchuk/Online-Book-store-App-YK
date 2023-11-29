@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add categories-column to books
+      author: Yuriy Kononchuk
+      changes:
+        - addColumn:
+            tableName: books
+            columns:
+              - column:
+                  name: categories
+                  type: varchar(255)

@@ -1,6 +1,7 @@
 package com.example.project.service.impl;
 
 import com.example.project.dto.book.BookDto;
+import com.example.project.dto.book.BookDtoWithoutCategoryIds;
 import com.example.project.dto.book.BookSearchParameters;
 import com.example.project.dto.book.CreateBookRequestDto;
 import com.example.project.mapper.BookMapper;
@@ -10,32 +11,28 @@ import com.example.project.repository.book.BookSpecificationBuilder;
 import com.example.project.service.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
-    private BookSpecificationBuilder bookSpecificationBuilder;
-    private BookMapper bookMapper;
-
-    @Autowired
-    public BookServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    private final BookSpecificationBuilder bookSpecificationBuilder;
+    private final BookMapper bookMapper;
 
     @Override
     public BookDto save(CreateBookRequestDto requestDto) {
-        Book book = bookMapper.toModel(requestDto);
+        Book book = bookMapper.toEntity(requestDto);
         return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
-    public List<BookDto> findAll(Pageable pageable) {
+    public List<BookDtoWithoutCategoryIds> findAll(Pageable pageable) {
         return bookRepository.findAll(pageable).stream()
-                .map(book -> bookMapper.toDto(book))
+                .map(book -> bookMapper.toDtoWithoutCategories(book))
                 .toList();
     }
 
@@ -64,5 +61,10 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll(bookSpecification, pageable).stream()
                 .map(bookMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public List<Book> findAllByCategoryId(Long categoryId) {
+        return bookRepository.findAllByCategoriesId(categoryId);
     }
 }

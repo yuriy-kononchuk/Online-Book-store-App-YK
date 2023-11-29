@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.dto.book.BookDto;
+import com.example.project.dto.book.BookDtoWithoutCategoryIds;
 import com.example.project.dto.book.BookSearchParameters;
 import com.example.project.dto.book.CreateBookRequestDto;
 import com.example.project.service.BookService;
@@ -32,7 +33,7 @@ public class BookController {
 
     @GetMapping
     @Operation(summary = "Get All Books", description = "Get a list of all available books")
-    public List<BookDto> getAll(Pageable pageable) {
+    public List<BookDtoWithoutCategoryIds> getAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
