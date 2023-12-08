@@ -39,10 +39,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto update(Long id, CreateCategoryRequestDto requestDto) { // 2nd parametr is ok?
-        Category category = categoryMapper.toEntity(requestDto);
-        Category categoryToUpdate = categoryRepository.findById(category.getId()).orElseThrow(
+    public CategoryDto update(Long id, CreateCategoryRequestDto requestDto) {
+        Category categoryToUpdate = categoryRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find a category by id: " + id));
+        categoryToUpdate.setName(requestDto.name());
+        categoryToUpdate.setDescription(requestDto.description());
+        /*Category category = categoryMapper.toEntity(requestDto);
+        Category categoryToUpdate = categoryRepository.findById(category.getId()).orElseThrow(
+                () -> new EntityNotFoundException("Can't find a category by id: " + id));*/
         return categoryMapper.toDto(categoryRepository.save(categoryToUpdate));
     }
 

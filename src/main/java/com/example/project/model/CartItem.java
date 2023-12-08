@@ -5,17 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -23,39 +21,28 @@ import org.hibernate.annotations.Where;
 @Data
 @SQLDelete(sql = "UPDATE books SET is_deleted = TRUE WHERE id = ?")
 @Where(clause = "is_deleted = FALSE")
-@Table(name = "books")
+@Table(name = "cartitems")
 @NoArgsConstructor
-public class Book {
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    @Column(nullable = false)
-    private String title;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne
+    private ShoppingCart shoppingCart;
     @NotNull
-    @Column(nullable = false)
-    private String author;
-    @NotNull
-    @Column(nullable = false, unique = true)
-    private String isbn;
+    @OneToOne
+    private Book book;
     @NotNull
     @Min(value = 0)
     @Column(nullable = false)
-    private BigDecimal price;
-    private String description;
-    @Column(name = "cover_image")
-    private String coverImage;
-    @ManyToMany
-    @JoinTable(
-            name = "book_categories",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private Set<Category> categories = new HashSet<>();
+    private int quantity;
     @Column(nullable = false)
     private boolean isDeleted = false;
 
-    public Book(Long id) {
+    public CartItem(Long id) {
         this.id = id;
     }
 }

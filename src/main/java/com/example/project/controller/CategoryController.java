@@ -1,9 +1,8 @@
 package com.example.project.controller;
 
+import com.example.project.dto.book.BookDto;
 import com.example.project.dto.category.CategoryDto;
 import com.example.project.dto.category.CreateCategoryRequestDto;
-import com.example.project.model.Book;
-import com.example.project.model.Category;
 import com.example.project.service.BookService;
 import com.example.project.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +35,7 @@ public class CategoryController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @Operation(summary = "Create a new category", description = "Create a new cayegory")
+    @Operation(summary = "Create a new category", description = "Create a new category")
     @ApiResponse(responseCode = "201", description = "New category is successfully created")
     public CategoryDto createCategory(@RequestBody @Valid CreateCategoryRequestDto categoryDto) {
         return categoryService.save(categoryDto);
@@ -45,7 +44,7 @@ public class CategoryController {
     @GetMapping
     @Operation(summary = "Get All Categories",
             description = "Get a list of all available categories")
-    public List<Category> getAll(Pageable pageable) {
+    public List<CategoryDto> getAll(Pageable pageable) {
         return categoryService.findAll(pageable);
     }
 
@@ -59,7 +58,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Update a category by ID", description = "Update a category by id")
     @ApiResponse(responseCode = "200", description = "Requested category was updated")
-    public CategoryDto updateCategory(Long id, CreateCategoryRequestDto categoryDto) {
+    public CategoryDto updateCategory(@PathVariable Long id, CreateCategoryRequestDto categoryDto) {
         return categoryService.update(id, categoryDto);
     }
 
@@ -74,7 +73,7 @@ public class CategoryController {
     @GetMapping("/{id}/books")
     @Operation(summary = "Get a list of books by category ID",
             description = "Get a list of all available books by category id")
-    public List<Book> getBooksByCategoryId(@PathVariable Long id) {
+    public List<BookDto> getBooksByCategoryId(@PathVariable Long id) {
         return bookService.findAllByCategoryId(id);
     }
 

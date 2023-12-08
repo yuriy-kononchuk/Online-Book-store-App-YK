@@ -9,4 +9,5 @@ public class UserResponseDto {
     private String firstName;
     private String lastName;
     private String shippingAddress;
+    private Long shoppingCartId; // added
 }

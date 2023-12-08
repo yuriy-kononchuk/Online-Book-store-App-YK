@@ -7,11 +7,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
@@ -23,39 +22,26 @@ import org.hibernate.annotations.Where;
 @Data
 @SQLDelete(sql = "UPDATE books SET is_deleted = TRUE WHERE id = ?")
 @Where(clause = "is_deleted = FALSE")
-@Table(name = "books")
+@Table(name = "shoppingcarts")
 @NoArgsConstructor
-public class Book {
+public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    @Column(nullable = false)
-    private String title;
-    @NotNull
-    @Column(nullable = false)
-    private String author;
-    @NotNull
-    @Column(nullable = false, unique = true)
-    private String isbn;
-    @NotNull
-    @Min(value = 0)
-    @Column(nullable = false)
-    private BigDecimal price;
-    private String description;
-    @Column(name = "cover_image")
-    private String coverImage;
-    @ManyToMany
+    @OneToOne
+    private User user;
+    @OneToMany
     @JoinTable(
-            name = "book_categories",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
+            name = "shoppingcart_items",
+            joinColumns = @JoinColumn(name = "shoppingcart_id"),
+            inverseJoinColumns = @JoinColumn(name = "cartitem_id")
     )
-    private Set<Category> categories = new HashSet<>();
+    private Set<CartItem> cartItems = new HashSet<>();
     @Column(nullable = false)
     private boolean isDeleted = false;
 
-    public Book(Long id) {
+    public ShoppingCart(Long id) {
         this.id = id;
     }
 }

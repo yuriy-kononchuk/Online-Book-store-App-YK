@@ -4,10 +4,6 @@ import com.example.project.dto.book.BookDto;
 import com.example.project.dto.book.BookDtoWithoutCategoryIds;
 import com.example.project.dto.book.CreateBookRequestDto;
 import com.example.project.model.Book;
-import com.example.project.model.Category;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,16 +22,9 @@ public class BookMapperImpl implements BookMapper {
         dto.setDescription(book.getDescription());
         dto.setCoverImage(book.getCoverImage());
 
-        setcategoryIds(dto, book); // added with private method
+        setCategoryIds(dto, book); // added
 
         return dto;
-    }
-
-    private void setcategoryIds(BookDto bookDto, Book book) {
-        List<Long> categoryIds = book.getCategories().stream()
-                .map(Category::getId)
-                .toList();
-        bookDto.setCategoryIds(categoryIds);
     }
 
     @Override
@@ -51,20 +40,13 @@ public class BookMapperImpl implements BookMapper {
         book.setDescription(requestDto.getDescription());
         book.setCoverImage(requestDto.getCoverImage());
 
-        setCategories(requestDto.getCategoryIds(), book); // added with private method
+        setCategories(book, requestDto); // added
 
         return book;
     }
 
-    private void setCategories(List<Long> categoryIds, Book book) {
-        Set<Category> categories = categoryIds.stream()
-                .map(Category::new)
-                .collect(Collectors.toSet());
-        book.setCategories(categories);
-    }
-
     @Override
-    public BookDtoWithoutCategoryIds toDtoWithoutCategories(Book book) { // added
+    public BookDtoWithoutCategoryIds toDtoWithoutCategories(Book book) {
         if (book == null) {
             return null;
         }
