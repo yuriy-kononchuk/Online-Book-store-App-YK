@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
@@ -50,8 +51,8 @@ public class User implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
     @NotNull
-    @Column(nullable = false)
-    private ShoppingCart shoppingCart; // added
+    @OneToOne(mappedBy = "user")
+    private ShoppingCart shoppingCart;
     @Column(nullable = false)
     private boolean isDeleted = false;
 

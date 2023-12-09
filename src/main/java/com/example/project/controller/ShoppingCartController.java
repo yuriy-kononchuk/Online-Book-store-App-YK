@@ -56,7 +56,7 @@ public class ShoppingCartController {
             description = "Update a quantity for a book in shopping cart")
     @ApiResponse(responseCode = "200", description = "Quantity for requested book was updated")
     public ShoppingCartDto updateBookQuantityInShoppingCart(
-            @PathVariable Long cartItemId, CreateCartItemRequestDto cartItemRequestDto,
+            @PathVariable Long cartItemId, @RequestBody CreateCartItemRequestDto cartItemRequestDto,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         return shoppingCartService.updateBookQuantityByCartItemId(
@@ -66,7 +66,7 @@ public class ShoppingCartController {
     @DeleteMapping("/cart-items/{id}")
     @Operation(summary = "Delete a book from shopping cart",
             description = "Delete a book from shopping cart")
-    @ApiResponse(responseCode = "200",
+    @ApiResponse(responseCode = "404",
             description = "Requested book was deleted from shopping cart")
     public ShoppingCartDto deleteBookFromShoppingCart(@PathVariable Long cartItemId,
                                                       Authentication authentication) {

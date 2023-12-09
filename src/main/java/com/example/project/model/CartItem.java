@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -31,9 +32,11 @@ public class CartItem {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne
+    @JoinColumn(name = "shoppingcart_id")
     private ShoppingCart shoppingCart;
     @NotNull
     @OneToOne
+    @JoinColumn(name = "book_id")
     private Book book;
     @NotNull
     @Min(value = 0)

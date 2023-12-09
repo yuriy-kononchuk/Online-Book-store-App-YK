@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -30,13 +29,9 @@ public class ShoppingCart {
     private Long id;
     @NotNull
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany
-    @JoinTable(
-            name = "shoppingcart_items",
-            joinColumns = @JoinColumn(name = "shoppingcart_id"),
-            inverseJoinColumns = @JoinColumn(name = "cartitem_id")
-    )
+    @OneToMany(mappedBy = "shoppingCart")
     private Set<CartItem> cartItems = new HashSet<>();
     @Column(nullable = false)
     private boolean isDeleted = false;
