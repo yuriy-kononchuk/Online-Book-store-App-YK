@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create cart_item-table
+      id: create-order_item-table
       author: Yuriy Kononchuk
       changes:
         - createTable:
-            tableName: cart_item
+            tableName: order_item
             columns:
               - column:
                   name: id
@@ -14,7 +14,7 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: shopping_cart_id
+                  name: order_id
                   type: bigint
                   constraints:
                     nullable: false
@@ -26,6 +26,11 @@ databaseChangeLog:
               - column:
                   name: quantity
                   type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: decimal
                   constraints:
                     nullable: false
               - column:

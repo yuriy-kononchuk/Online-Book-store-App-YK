@@ -46,9 +46,10 @@ public class ShoppingCartController {
     @GetMapping
     @Operation(summary = "Get a list of books by user ID",
             description = "Get a user's shopping cart list of all books by user id")
-    public List<CartItemDto> getBooksByUserId(Authentication authentication, Pageable pageable) {
+    public List<CartItemDto> getAllShoppingCartItems(Authentication authentication,
+                                                     Pageable pageable) {
         User user = (User) authentication.getPrincipal();
-        return shoppingCartService.findAllByUserId(user.getId(), pageable);
+        return shoppingCartService.findAllByShoppingCartId(user, pageable);
     }
 
     @PutMapping("/cart-items/{id}")

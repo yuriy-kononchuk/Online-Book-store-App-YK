@@ -1,5 +1,6 @@
 package com.example.project.mapper;
 
+import com.example.project.config.MapperConfig;
 import com.example.project.dto.shoppingcart.CreateShoppingCartRequestDto;
 import com.example.project.dto.shoppingcart.ShoppingCartDto;
 import com.example.project.model.CartItem;
@@ -10,7 +11,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.MapperConfig;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
@@ -42,8 +42,8 @@ public interface ShoppingCartMapper {
         shoppingCart.setCartItems(cartItems);
     }
 
-    @Named("shoppingCartById")
-    default ShoppingCart shoppingCartById(Long id) { // added
+    @Named("shoppingCartFromId")
+    default ShoppingCart shoppingCartFromId(Long id) { // added
         return Optional.ofNullable(id)
                 .map(ShoppingCart::new)
                 .orElse(null);

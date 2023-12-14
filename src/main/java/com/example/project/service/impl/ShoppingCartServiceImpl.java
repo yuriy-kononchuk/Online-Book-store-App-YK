@@ -8,6 +8,7 @@ import com.example.project.mapper.CartItemMapper;
 import com.example.project.mapper.ShoppingCartMapper;
 import com.example.project.model.CartItem;
 import com.example.project.model.ShoppingCart;
+import com.example.project.model.User;
 import com.example.project.repository.CartItemRepository;
 import com.example.project.repository.ShoppingCartRepository;
 import com.example.project.service.ShoppingCartService;
@@ -33,8 +34,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public List<CartItemDto> findAllByUserId(Long userId, Pageable pageable) {
-        return cartItemRepository.findAllByShoppingCart_User_Id(userId, pageable).stream()
+    public List<CartItemDto> findAllByShoppingCartId(User user, Pageable pageable) {
+        Long shoppingCartId = user.getShoppingCart().getId();
+        return cartItemRepository.findAllByShoppingCartId(shoppingCartId, pageable).stream()
                 .map(cartItemMapper::toDto)
                 .toList();
     }

@@ -33,7 +33,7 @@ public class CartItemMapperImpl implements CartItemMapper {
         CartItem cartItem = new CartItem();
         cartItem.setBook(bookMapper.bookFromId(requestDto.bookId()));
         cartItem.setQuantity(requestDto.quantity());
-        cartItem.setShoppingCart(shoppingCartMapper.shoppingCartById(
+        cartItem.setShoppingCart(shoppingCartMapper.shoppingCartFromId(
                 requestDto.shoppingCartId())); // added
         return cartItem;
     }

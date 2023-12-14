@@ -25,3 +25,10 @@ databaseChangeLog:
       file: db/changelog/changes/12-add-cartitem-table.yaml
   - include:
       file: db/changelog/changes/13-add-shoppingcart-to-user-table.yaml
+  - include:
+      file: db/changelog/changes/14-add-order-to-user-table.yaml
+  - include:
+      file: db/changelog/changes/15-add-order-table.yaml
+  - include:
+      file: db/changelog/changes/16-add-orderitem-table.yaml
+
