@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add shoppingcart-column to user
+      author: Yuriy Kononchuk
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: shopping_cart
+                  type: varchar(255)

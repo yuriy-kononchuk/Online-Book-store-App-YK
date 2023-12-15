@@ -2,6 +2,7 @@ package com.example.project.mapper;
 
 import com.example.project.dto.user.UserRegistrationRequestDto;
 import com.example.project.dto.user.UserResponseDto;
+import com.example.project.model.ShoppingCart;
 import com.example.project.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,9 @@ public class UserMapperImpl implements UserMapper {
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setShippingAddress(user.getShippingAddress());
+
+        dto.setShoppingCartId(user.getShoppingCart().getId()); // added
+
         return dto;
     }
 
@@ -32,6 +36,10 @@ public class UserMapperImpl implements UserMapper {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setShippingAddress(userDto.getShippingAddress());
+
+        ShoppingCart shoppingCart = new ShoppingCart(userDto.getShoppingCartId()); // added
+        user.setShoppingCart(shoppingCart);
+
         return user;
     }
 }

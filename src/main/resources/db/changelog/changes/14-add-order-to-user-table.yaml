@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-order-column-to-user
+      author: Yuriy Kononchuk
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: orders
+                  type: varchar(255)

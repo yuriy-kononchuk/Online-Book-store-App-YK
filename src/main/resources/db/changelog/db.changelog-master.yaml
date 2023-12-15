@@ -13,3 +13,22 @@ databaseChangeLog:
       file: db/changelog/changes/06-insert-roles.yaml
   - include:
       file: db/changelog/changes/07-insert-users-roles.yaml
+  - include:
+      file: db/changelog/changes/08-create-categories-table.yaml
+  - include:
+      file: db/changelog/changes/09-add-category-to-books-table.yaml
+  - include:
+      file: db/changelog/changes/10-create-books-categories-table.yaml
+  - include:
+      file: db/changelog/changes/11-add-shoppingcart-table.yaml
+  - include:
+      file: db/changelog/changes/12-add-cartitem-table.yaml
+  - include:
+      file: db/changelog/changes/13-add-shoppingcart-to-user-table.yaml
+  - include:
+      file: db/changelog/changes/14-add-order-to-user-table.yaml
+  - include:
+      file: db/changelog/changes/15-add-order-table.yaml
+  - include:
+      file: db/changelog/changes/16-add-orderitem-table.yaml
+

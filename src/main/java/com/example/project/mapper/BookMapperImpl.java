@@ -1,6 +1,7 @@
 package com.example.project.mapper;
 
 import com.example.project.dto.book.BookDto;
+import com.example.project.dto.book.BookDtoWithoutCategoryIds;
 import com.example.project.dto.book.CreateBookRequestDto;
 import com.example.project.model.Book;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Component;
 public class BookMapperImpl implements BookMapper {
     @Override
     public BookDto toDto(Book book) {
+        if (book == null) {
+            return null;
+        }
         BookDto dto = new BookDto();
         dto.setId(book.getId());
         dto.setTitle(book.getTitle());
@@ -17,11 +21,17 @@ public class BookMapperImpl implements BookMapper {
         dto.setPrice(book.getPrice());
         dto.setDescription(book.getDescription());
         dto.setCoverImage(book.getCoverImage());
+
+        setCategoryIds(dto, book); // added
+
         return dto;
     }
 
     @Override
-    public Book toModel(CreateBookRequestDto requestDto) {
+    public Book toEntity(CreateBookRequestDto requestDto) {
+        if (requestDto == null) {
+            return null;
+        }
         Book book = new Book();
         book.setTitle(requestDto.getTitle());
         book.setAuthor(requestDto.getAuthor());
@@ -29,6 +39,25 @@ public class BookMapperImpl implements BookMapper {
         book.setPrice(requestDto.getPrice());
         book.setDescription(requestDto.getDescription());
         book.setCoverImage(requestDto.getCoverImage());
+
+        setCategories(book, requestDto); // added
+
         return book;
+    }
+
+    @Override
+    public BookDtoWithoutCategoryIds toDtoWithoutCategories(Book book) {
+        if (book == null) {
+            return null;
+        }
+        BookDtoWithoutCategoryIds dto = new BookDtoWithoutCategoryIds();
+        dto.setId(book.getId());
+        dto.setTitle(book.getTitle());
+        dto.setAuthor(book.getAuthor());
+        dto.setIsbn(book.getIsbn());
+        dto.setPrice(book.getPrice());
+        dto.setDescription(book.getDescription());
+        dto.setCoverImage(book.getCoverImage());
+        return dto;
     }
 }
