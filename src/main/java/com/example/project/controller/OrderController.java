@@ -57,6 +57,5 @@ public class OrderController {
                                       Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         return orderService.updateStatus(user, id, status);
-
     }
 }
