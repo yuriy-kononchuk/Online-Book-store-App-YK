@@ -31,4 +31,7 @@ databaseChangeLog:
       file: db/changelog/changes/15-add-order-table.yaml
   - include:
       file: db/changelog/changes/16-add-orderitem-table.yaml
-
+  - include:
+      file: db/changelog/changes/17-modify-quantity-column-type.yaml
+  - include:
+      file: db/changelog/changes/18-rename-table-names.yaml

@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: modify-quantity-column-type-cart-item
+      author: Yuriy Kononchuk
+      changes:
+        - modifyDataType:
+            tableName: cart_item
+            columnName: quantity
+            newDataType: int
+
+  - changeSet:
+      id: modify-quantity-column-type-order-item
+      author: Yuriy Kononchuk
+      changes:
+        - modifyDataType:
+            tableName: order_item
+            columnName: quantity
+            newDataType: int
