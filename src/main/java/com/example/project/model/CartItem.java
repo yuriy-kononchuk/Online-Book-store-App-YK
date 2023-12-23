@@ -22,7 +22,7 @@ import org.hibernate.annotations.Where;
 @Data
 @SQLDelete(sql = "UPDATE books SET is_deleted = TRUE WHERE id = ?")
 @Where(clause = "is_deleted = FALSE")
-@Table(name = "cartitems")
+@Table(name = "cart_items")
 @NoArgsConstructor
 public class CartItem {
     @Id
@@ -32,7 +32,7 @@ public class CartItem {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "shoppingcart_id")
+    @JoinColumn(name = "shopping_cart_id")
     private ShoppingCart shoppingCart;
     @NotNull
     @OneToOne

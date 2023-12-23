@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: rename-tables
+      author: Yuriy Kononchuk
+      changes:
+        - renameTable:
+            oldTableName: cart_item
+            newTableName: cart_items
+
+        - renameTable:
+            oldTableName: order
+            newTableName: orders
+
+        - renameTable:
+            oldTableName: order_item
+            newTableName: order_items
+

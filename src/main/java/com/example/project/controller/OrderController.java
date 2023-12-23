@@ -8,6 +8,7 @@ import com.example.project.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public class OrderController {
     @Operation(summary = "Place a user's order",
             description = "Create a user's new order")
     @ApiResponse(responseCode = "201", description = "New order was placed successfully")
-    public OrderDto saveOrder(@RequestBody CreateOrderRequestDto requestDto,
+    public OrderDto saveOrder(@RequestBody @Valid CreateOrderRequestDto requestDto,
                               Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         return orderService.saveOrder(user, requestDto);
