@@ -35,3 +35,5 @@ databaseChangeLog:
       file: db/changelog/changes/17-modify-quantity-column-type.yaml
   - include:
       file: db/changelog/changes/18-rename-table-names.yaml
+  - include:
+      file: db/changelog/changes/19-modify-price-column-type.yaml

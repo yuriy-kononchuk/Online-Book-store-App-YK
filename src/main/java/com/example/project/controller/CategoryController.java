@@ -58,12 +58,14 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Update a category by ID", description = "Update a category by id")
     @ApiResponse(responseCode = "200", description = "Requested category was updated")
-    public CategoryDto updateCategory(@PathVariable Long id, CreateCategoryRequestDto categoryDto) {
+    public CategoryDto updateCategory(@PathVariable Long id,
+                                      @RequestBody CreateCategoryRequestDto categoryDto) {
         return categoryService.update(id, categoryDto);
     }
 
-    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/{id}")
     @Operation(summary = "Delete a category by ID", description = "Delete a category by id")
     @ApiResponse(responseCode = "404", description = "Requested category was deleted")
     public void deleteCategory(@PathVariable Long id) {
@@ -76,5 +78,4 @@ public class CategoryController {
     public List<BookDto> getBooksByCategoryId(@PathVariable Long id) {
         return bookService.findAllByCategoryId(id);
     }
-
 }

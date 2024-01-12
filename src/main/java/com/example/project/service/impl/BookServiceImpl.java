@@ -6,11 +6,14 @@ import com.example.project.dto.book.BookSearchParameters;
 import com.example.project.dto.book.CreateBookRequestDto;
 import com.example.project.mapper.BookMapper;
 import com.example.project.model.Book;
+import com.example.project.model.Category;
 import com.example.project.repository.book.BookRepository;
 import com.example.project.repository.book.BookSpecificationBuilder;
 import com.example.project.service.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -49,10 +52,21 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void updateById(Long id) {
-        Book book = bookRepository.findById(id)
+    public void updateById(Long id, CreateBookRequestDto requestDto) {
+        Book bookToUpdate = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can't find a book by id: " + id));
-        bookRepository.save(book);
+        Set<Category> categories = requestDto.getCategoryIds().stream()
+                .map(Category::new)
+                .collect(Collectors.toSet());
+
+        bookToUpdate.setTitle(requestDto.getTitle());
+        bookToUpdate.setAuthor(requestDto.getAuthor());
+        bookToUpdate.setIsbn(requestDto.getIsbn());
+        bookToUpdate.setPrice(requestDto.getPrice());
+        bookToUpdate.setDescription(requestDto.getDescription());
+        bookToUpdate.setCoverImage(requestDto.getCoverImage());
+        bookToUpdate.setCategories(categories);
+        bookRepository.save(bookToUpdate);
     }
 
     @Override

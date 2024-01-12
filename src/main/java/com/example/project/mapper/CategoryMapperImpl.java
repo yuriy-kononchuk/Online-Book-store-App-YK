@@ -13,8 +13,8 @@ public class CategoryMapperImpl implements CategoryMapper {
             return null;
         }
         CategoryDto dto = new CategoryDto();
-        dto.setId(dto.getId());
-        dto.setName(dto.getName());
+        dto.setId(category.getId());
+        dto.setName(category.getName());
         dto.setDescription(category.getDescription());
         return dto;
     }

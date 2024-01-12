@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: modify-price-column-type-books
+      author: Yuriy Kononchuk
+      changes:
+        - modifyDataType:
+            tableName: books
+            columnName: price
+            newDataType: decimal(10,2)
