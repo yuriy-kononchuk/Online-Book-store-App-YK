@@ -51,8 +51,7 @@ class CategoryControllerTest {
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
-    @Sql(scripts = "classpath:database/categories/delete-test-category.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+
     @DisplayName("Create a new category is successful")
     void createCategory_ValidRequestDto_Success() throws Exception {
         CreateCategoryRequestDto requestDto = new CreateCategoryRequestDto("motivational",
@@ -146,7 +145,7 @@ class CategoryControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     @DisplayName("Delete category by Id is successful")
-    void deleteCategory_ValidCategoryId_Success() throws Exception { //NEED TO BE REVIEWED
+    void deleteCategory_ValidCategoryId_Success() throws Exception {
         Long categoryId = 3L;
 
         mockMvc.perform(delete("/books/categories/" + categoryId))

@@ -15,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Sql(scripts = {
+        "classpath:database/categories/remove-test-categories.sql",
         "classpath:database/books/add-test-books-to-books-table.sql",
         "classpath:database/categories/add-test-categories.sql",
         "classpath:database/books/add-test-books-to-books-categories-table.sql"
