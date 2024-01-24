@@ -67,7 +67,7 @@ class BookServiceTest {
         Category category2 = new Category();
         category2.setId(2L);
         category2.setName("historical");
-        category1.setDescription("history researches");
+        category2.setDescription("history researches");
 
         Book book = new Book();
         book.setTitle(requestDto.getTitle());
@@ -171,7 +171,7 @@ class BookServiceTest {
         Category category2 = new Category();
         category2.setId(2L);
         category2.setName("historical");
-        category1.setDescription("history researches");
+        category2.setDescription("history researches");
         Long bookId = 1L;
 
         Book book = new Book();
@@ -242,8 +242,10 @@ class BookServiceTest {
         book.setCoverImage("old cover");
         book.setCategories(Set.of(category1, category2));
 
+        bookRepository.save(book);
         bookService.deleteById(bookId);
 
+        verify(bookRepository, times(1)).save(book);
         verify(bookRepository, times(1)).deleteById(bookId);
         verifyNoMoreInteractions(bookRepository);
     }

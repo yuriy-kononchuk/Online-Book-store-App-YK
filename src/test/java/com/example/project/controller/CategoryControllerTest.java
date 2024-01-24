@@ -46,12 +46,9 @@ class CategoryControllerTest {
     private ObjectMapper objectMapper;
     @Autowired
     private TestCategoryRepository testCategoryRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
-
     @DisplayName("Create a new category is successful")
     void createCategory_ValidRequestDto_Success() throws Exception {
         CreateCategoryRequestDto requestDto = new CreateCategoryRequestDto("motivational",

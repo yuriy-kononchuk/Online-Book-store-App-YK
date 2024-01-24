@@ -34,7 +34,7 @@ public class CartItemServiceImpl implements CartItemService {
         CartItem cartItem = cartItemRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find a cart item by id: " + id));
         cartItem.setQuantity(requestDto.quantity());
-        return cartItem;
+        return cartItemRepository.save(cartItem);
     }
 
     @Override

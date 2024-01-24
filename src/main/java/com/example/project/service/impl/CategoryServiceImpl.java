@@ -52,6 +52,5 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find a category by id: " + id));
         categoryRepository.delete(category);
-        //categoryRepository.deleteById(id); //also tested biy failed
     }
 }
