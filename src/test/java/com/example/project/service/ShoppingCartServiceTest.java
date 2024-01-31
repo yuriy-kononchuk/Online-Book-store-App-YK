@@ -1,6 +1,7 @@
 package com.example.project.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -94,7 +95,7 @@ class ShoppingCartServiceTest {
         shoppingCart.setCartItems(Set.of(cartItem));
 
         ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
-                .setId(1L).setUser(shoppingCart.getUser())
+                .setId(1L).setUser_id(shoppingCart.getUser().getId())
                 .setCartItemsIds(List.of(cartItem.getId()));
 
         when(shoppingCartMapper.toEntity(requestDto)).thenReturn(shoppingCart);
@@ -169,9 +170,11 @@ class ShoppingCartServiceTest {
     }
 
     @Test
-    @DisplayName("Verify adBookToShoppingCart() method works correctly")
-    void addBookToShoppingCart_ValidCreateCartItemRequestDto_ReturnsShoppingCartDto() {
+    @DisplayName("Verify adBookToShoppingCart() method with new item works correctly")
+    void addBookToShoppingCart_NewValidCreateCartItemRequestDto_ReturnsShoppingCartDto() {
         Long userId = 1L;
+        User user = new User(1L);
+
         CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
                 2L, 2, 2L);
 
@@ -187,7 +190,7 @@ class ShoppingCartServiceTest {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setId(2L);
         shoppingCart.setCartItems(new HashSet<>());
-        shoppingCart.setUser(new User());
+        shoppingCart.setUser(user);
 
         CartItem cartItem = new CartItem();
         cartItem.setId(2L);
@@ -196,7 +199,7 @@ class ShoppingCartServiceTest {
         cartItem.setShoppingCart(shoppingCart);
 
         ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
-                .setId(shoppingCart.getId()).setUser(shoppingCart.getUser())
+                .setId(shoppingCart.getId()).setUser_id(shoppingCart.getUser().getId())
                 .setCartItemsIds(List.of(cartItem.getId()));
 
         when(shoppingCartRepository.findShoppingCartByUserId(userId)).thenReturn(shoppingCart);
@@ -206,14 +209,61 @@ class ShoppingCartServiceTest {
 
         ShoppingCartDto actualDto = shoppingCartService.addBookToShoppingCart(userId, requestDto);
 
+        assertNotNull(actualDto);
         AssertionsForClassTypes.assertThat(actualDto).isEqualTo(shoppingCartDto);
         assertEquals(shoppingCartDto.getId(), actualDto.getId());
         verify(shoppingCartRepository, times(1)).findShoppingCartByUserId(userId);
         verify(cartItemMapper, times(1)).toEntity(requestDto);
-        verify(cartItemRepository, times(1)).save(cartItem);
+        verify(cartItemRepository ,times(1)).save(cartItem);
+        verify(shoppingCartRepository, times(1)).save(shoppingCart);
         verify(shoppingCartMapper, times(1)).toDto(shoppingCart);
         verifyNoMoreInteractions(shoppingCartRepository, shoppingCartMapper,
                 cartItemRepository, cartItemMapper);
+    }
+
+    @Test
+    @DisplayName("Verify adBookToShoppingCart() method with existing item updates quantity")
+    void addBookToShoppingCart_WithExistingCartItemRequestDto_ShouldUpdateQuantity() {
+        Long userId = 1L;
+        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(1L, 2, 3L);
+
+        ShoppingCart shoppingCartByUserId = new ShoppingCart();
+        shoppingCartByUserId.setId(1L);
+        shoppingCartByUserId.setUser(new User());
+
+        Book existingBook = new Book();
+        existingBook.setId(1L);
+        existingBook.setTitle("Ukraine wins");
+        existingBook.setAuthor("Zaluzhnyj");
+        existingBook.setIsbn("555-5-23-230872-5");
+        existingBook.setPrice(BigDecimal.valueOf(49.99));
+        existingBook.setDescription("victory for Ukraine");
+        existingBook.setCoverImage("Best buy");
+
+        CartItem existingCartItem = new CartItem();
+        existingCartItem.setId(2L);
+        existingCartItem.setBook(existingBook);
+        existingCartItem.setQuantity(3);
+
+        ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
+                .setId(shoppingCartByUserId.getId()).setUser_id(shoppingCartByUserId.getUser().getId())
+                .setCartItemsIds(List.of(existingCartItem.getId()));
+
+        shoppingCartByUserId.setCartItems(Set.of(existingCartItem));
+
+        when(shoppingCartRepository.findShoppingCartByUserId(userId)).thenReturn(shoppingCartByUserId);
+        when(shoppingCartRepository.save(shoppingCartByUserId)).thenReturn(shoppingCartByUserId);
+        when(shoppingCartMapper.toDto(shoppingCartByUserId)).thenReturn(shoppingCartDto);
+
+        ShoppingCartDto actualDto = shoppingCartService.addBookToShoppingCart(userId, requestDto);
+
+        assertNotNull(actualDto);
+        assertEquals(shoppingCartByUserId.getId(), actualDto.getId());
+        assertEquals(5, existingCartItem.getQuantity());
+        verify(shoppingCartRepository, times(1)).findShoppingCartByUserId(userId);
+        verify(shoppingCartRepository, times(1)).save(shoppingCartByUserId);
+        verify(shoppingCartMapper, times(1)).toDto(shoppingCartByUserId);
+        verifyNoMoreInteractions(shoppingCartRepository, shoppingCartMapper);
     }
 
     @Test
@@ -233,7 +283,7 @@ class ShoppingCartServiceTest {
         shoppingCart.setUser(new User());
 
         ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
-                .setId(1L).setUser(new User()).setCartItemsIds(List.of(cartItemId));
+                .setId(1L).setUser_id(new User().getId()).setCartItemsIds(List.of(cartItemId));
 
         when(shoppingCartRepository.findShoppingCartByUserId(userId)).thenReturn(shoppingCart);
         doNothing().when(cartItemRepository).delete(cartItemToDelete);
@@ -307,7 +357,7 @@ class ShoppingCartServiceTest {
         cartItemUpdatedQuantity.setQuantity(5);
 
         ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
-                .setId(shoppingCart.getId()).setUser(shoppingCart.getUser())
+                .setId(shoppingCart.getId()).setUser_id(shoppingCart.getUser().getId())
                 .setCartItemsIds(List.of(cartItemUpdatedQuantity.getId()));
 
         when(shoppingCartRepository.findShoppingCartByUserId(userId)).thenReturn(shoppingCart);

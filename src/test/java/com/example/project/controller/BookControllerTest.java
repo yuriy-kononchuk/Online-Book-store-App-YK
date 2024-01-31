@@ -112,7 +112,7 @@ class BookControllerTest {
         BookDtoWithoutCategoryIds[] actual = objectMapper
                 .readValue(result.getResponse().getContentAsByteArray(),
                 BookDtoWithoutCategoryIds[].class);
-        assertEquals(3, expected.size());
+        assertEquals(expected.size(), actual.length);
         assertEquals(expected, Arrays.stream(actual).toList());
     }
 

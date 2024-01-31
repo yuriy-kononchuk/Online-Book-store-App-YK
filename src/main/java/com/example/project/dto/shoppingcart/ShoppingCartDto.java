@@ -9,6 +9,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ShoppingCartDto {
     private Long id;
-    private User user;
+    private Long user_id; //replaced User user
     private List<Long> cartItemsIds;
 }

@@ -68,7 +68,7 @@ public class ShoppingCartController {
     @DeleteMapping("/cart-items/{id}")
     @Operation(summary = "Delete a book from shopping cart",
             description = "Delete a book from shopping cart")
-    @ApiResponse(responseCode = "404",
+    @ApiResponse(responseCode = "204",
             description = "Requested book was deleted from shopping cart")
     public ShoppingCartDto deleteBookFromShoppingCart(@PathVariable Long cartItemId,
                                                       Authentication authentication) {

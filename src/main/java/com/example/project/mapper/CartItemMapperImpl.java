@@ -22,6 +22,7 @@ public class CartItemMapperImpl implements CartItemMapper {
         dto.setBookId(cartItem.getBook().getId());
         dto.setBookTitle(cartItem.getBook().getTitle());
         dto.setQuantity(cartItem.getQuantity());
+        dto.setShoppingCartId(cartItem.getShoppingCart().getId());
         return dto;
     }
 
@@ -34,7 +35,7 @@ public class CartItemMapperImpl implements CartItemMapper {
         cartItem.setBook(bookMapper.bookFromId(requestDto.bookId()));
         cartItem.setQuantity(requestDto.quantity());
         cartItem.setShoppingCart(shoppingCartMapper.shoppingCartFromId(
-                requestDto.shoppingCartId())); // added
+                requestDto.shoppingCartId()));
         return cartItem;
     }
 }

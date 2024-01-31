@@ -14,7 +14,6 @@ public class PasswordMatchesValidator implements ConstraintValidator<FieldMatch,
 
     @Override
     public boolean isValid(UserRegistrationRequestDto request, ConstraintValidatorContext context) {
-        //UserRegistrationRequestDto requestDto = (UserRegistrationRequestDto) value;
         UserRegistrationRequestDto requestDto = request;
         return requestDto.getPassword().equals(requestDto.getRepeatPassword());
     }
