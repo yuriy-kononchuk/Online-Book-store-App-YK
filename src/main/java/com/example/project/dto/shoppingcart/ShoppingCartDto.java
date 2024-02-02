@@ -1,6 +1,5 @@
 package com.example.project.dto.shoppingcart;
 
-import com.example.project.model.User;
 import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -9,6 +8,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ShoppingCartDto {
     private Long id;
-    private Long user_id; //replaced User user
+    private Long userId;
     private List<Long> cartItemsIds;
 }

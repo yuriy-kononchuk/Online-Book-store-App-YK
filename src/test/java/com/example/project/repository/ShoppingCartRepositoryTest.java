@@ -28,7 +28,7 @@ class ShoppingCartRepositoryTest {
         Long userId = 5L;
         User user = new User();
         user.setId(userId);
-        user.setEmail("userone@rest.com");
+        user.setEmail("userone@test.com");
         user.setPassword("userone");
         user.setFirstName("User");
         user.setLastName("One");

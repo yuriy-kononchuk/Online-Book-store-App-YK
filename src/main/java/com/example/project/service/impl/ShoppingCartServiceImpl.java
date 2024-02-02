@@ -53,20 +53,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElse(null);
 
         if (cartItemExist == null) {
-            CartItem addedCartItem = cartItemRepository.save(cartItemMapper.toEntity(cartItemRequestDto));
+            CartItem addedCartItem = cartItemRepository.save(
+                    cartItemMapper.toEntity(cartItemRequestDto));
             addedCartItem.setShoppingCart(shoppingCartByUserId);
             cartItems.add(addedCartItem);
         } else {
             cartItemExist.setQuantity(cartItemExist.getQuantity() + cartItemRequestDto.quantity());
         }
         shoppingCartRepository.save(shoppingCartByUserId);
-        /*CartItem cartItem = cartItemMapper.toEntity(cartItemRequestDto);
-        if (!cartItems.contains(cartItem)) {
-            cartItems.add(cartItem);
-        } else {
-            cartItem.setQuantity(cartItem.getQuantity() + cartItemRequestDto.quantity());
-        }
-        cartItemRepository.save(cartItem);*/
         return shoppingCartMapper.toDto(shoppingCartByUserId);
     }
 

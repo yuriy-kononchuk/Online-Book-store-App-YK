@@ -44,9 +44,6 @@ class CartItemServiceTest {
     @Test
     @DisplayName("Verify save() method works correctly")
     void save_ValidCreateCartItemRequestDto_ReturnsCartItemDto() {
-        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
-                2L, 2, 2L);
-
         User user = new User();
         user.setId(1L);
         user.setEmail("firstuser@test.com");
@@ -74,6 +71,9 @@ class CartItemServiceTest {
         book.setDescription("victory for Ukraine");
         book.setCoverImage("Best buy");
         book.setCategories(Set.of(category));
+
+        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
+                2L, 2, 2L);
 
         CartItem cartItem = new CartItem();
         cartItem.setBook(book);
@@ -101,7 +101,6 @@ class CartItemServiceTest {
     @Test
     @DisplayName("Verify getById() method works correctly")
     void getById_ValidCartItemId_ReturnsValidCartItemDto() {
-        Long cartItemId = 1L;
         User user = new User();
         user.setId(1L);
         user.setEmail("firstuser@test.com");
@@ -129,6 +128,8 @@ class CartItemServiceTest {
         book.setDescription("victory for Ukraine");
         book.setCoverImage("Best buy");
         book.setCategories(Set.of(category));
+
+        Long cartItemId = 1L;
 
         CartItem cartItem = new CartItem();
         cartItem.setId(cartItemId);
@@ -171,9 +172,6 @@ class CartItemServiceTest {
     @Test
     @DisplayName("Verify updateQuantity method by CartItemId works correctly")
     void updateQuantityByCartItemId_ValidCartItemId_ReturnsCartItemUpdated() {
-        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
-                2L, 5, 2L);
-
         User user = new User();
         user.setId(1L);
         user.setEmail("firstuser@test.com");
@@ -209,6 +207,9 @@ class CartItemServiceTest {
         oldCartItem.setBook(book);
         oldCartItem.setShoppingCart(shoppingCart);
         oldCartItem.setQuantity(2);
+
+        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
+                2L, 5, 2L);
 
         CartItem updatedCartItem = new CartItem();
         updatedCartItem.setId(cartItemId);

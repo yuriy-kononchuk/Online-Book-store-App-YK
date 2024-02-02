@@ -29,7 +29,6 @@ import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.DisplayName;
@@ -95,7 +94,7 @@ class ShoppingCartServiceTest {
         shoppingCart.setCartItems(Set.of(cartItem));
 
         ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
-                .setId(1L).setUser_id(shoppingCart.getUser().getId())
+                .setId(1L).setUserId(shoppingCart.getUser().getId())
                 .setCartItemsIds(List.of(cartItem.getId()));
 
         when(shoppingCartMapper.toEntity(requestDto)).thenReturn(shoppingCart);
@@ -154,7 +153,8 @@ class ShoppingCartServiceTest {
         when(cartItemMapper.toDto(cartItem1)).thenReturn(cartItemDto1);
         when(cartItemMapper.toDto(cartItem2)).thenReturn(cartItemDto2);
 
-        List<CartItemDto> cartItemDtos = shoppingCartService.findAllByShoppingCartId(user, pageable);
+        List<CartItemDto> cartItemDtos = shoppingCartService
+                .findAllByShoppingCartId(user, pageable);
 
         AssertionsForClassTypes.assertThat(cartItemDtos.size()).isEqualTo(2);
         AssertionsForClassTypes.assertThat(cartItemDtos.get(0))
@@ -172,12 +172,6 @@ class ShoppingCartServiceTest {
     @Test
     @DisplayName("Verify adBookToShoppingCart() method with new item works correctly")
     void addBookToShoppingCart_NewValidCreateCartItemRequestDto_ReturnsShoppingCartDto() {
-        Long userId = 1L;
-        User user = new User(1L);
-
-        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
-                2L, 2, 2L);
-
         Book book = new Book();
         book.setId(2L);
         book.setTitle("Ukraine wins");
@@ -187,10 +181,15 @@ class ShoppingCartServiceTest {
         book.setDescription("victory for Ukraine");
         book.setCoverImage("Best buy");
 
+        User user = new User(1L);
+
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setId(2L);
         shoppingCart.setCartItems(new HashSet<>());
         shoppingCart.setUser(user);
+
+        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
+                2L, 2, 2L);
 
         CartItem cartItem = new CartItem();
         cartItem.setId(2L);
@@ -198,8 +197,10 @@ class ShoppingCartServiceTest {
         cartItem.setQuantity(requestDto.quantity());
         cartItem.setShoppingCart(shoppingCart);
 
+        Long userId = 1L;
+
         ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
-                .setId(shoppingCart.getId()).setUser_id(shoppingCart.getUser().getId())
+                .setId(shoppingCart.getId()).setUserId(shoppingCart.getUser().getId())
                 .setCartItemsIds(List.of(cartItem.getId()));
 
         when(shoppingCartRepository.findShoppingCartByUserId(userId)).thenReturn(shoppingCart);
@@ -214,7 +215,7 @@ class ShoppingCartServiceTest {
         assertEquals(shoppingCartDto.getId(), actualDto.getId());
         verify(shoppingCartRepository, times(1)).findShoppingCartByUserId(userId);
         verify(cartItemMapper, times(1)).toEntity(requestDto);
-        verify(cartItemRepository ,times(1)).save(cartItem);
+        verify(cartItemRepository, times(1)).save(cartItem);
         verify(shoppingCartRepository, times(1)).save(shoppingCart);
         verify(shoppingCartMapper, times(1)).toDto(shoppingCart);
         verifyNoMoreInteractions(shoppingCartRepository, shoppingCartMapper,
@@ -224,9 +225,6 @@ class ShoppingCartServiceTest {
     @Test
     @DisplayName("Verify adBookToShoppingCart() method with existing item updates quantity")
     void addBookToShoppingCart_WithExistingCartItemRequestDto_ShouldUpdateQuantity() {
-        Long userId = 1L;
-        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(1L, 2, 3L);
-
         ShoppingCart shoppingCartByUserId = new ShoppingCart();
         shoppingCartByUserId.setId(1L);
         shoppingCartByUserId.setUser(new User());
@@ -244,14 +242,18 @@ class ShoppingCartServiceTest {
         existingCartItem.setId(2L);
         existingCartItem.setBook(existingBook);
         existingCartItem.setQuantity(3);
-
-        ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
-                .setId(shoppingCartByUserId.getId()).setUser_id(shoppingCartByUserId.getUser().getId())
-                .setCartItemsIds(List.of(existingCartItem.getId()));
-
         shoppingCartByUserId.setCartItems(Set.of(existingCartItem));
 
-        when(shoppingCartRepository.findShoppingCartByUserId(userId)).thenReturn(shoppingCartByUserId);
+        Long userId = 1L;
+        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(1L, 2, 3L);
+
+        ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
+                .setId(shoppingCartByUserId.getId())
+                .setUserId(shoppingCartByUserId.getUser().getId())
+                .setCartItemsIds(List.of(existingCartItem.getId()));
+
+        when(shoppingCartRepository.findShoppingCartByUserId(userId))
+                .thenReturn(shoppingCartByUserId);
         when(shoppingCartRepository.save(shoppingCartByUserId)).thenReturn(shoppingCartByUserId);
         when(shoppingCartMapper.toDto(shoppingCartByUserId)).thenReturn(shoppingCartDto);
 
@@ -270,7 +272,6 @@ class ShoppingCartServiceTest {
     @DisplayName("Verify deleteBookByCartItemId() method works correctly")
     void deleteBookByCartItemId_ValidCartItemAndUserId_ReturnsShoppingCartDto() {
         Long cartItemId = 1L;
-        Long userId = 1L;
 
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setId(1L);
@@ -282,19 +283,21 @@ class ShoppingCartServiceTest {
         shoppingCart.setCartItems(cartItems);
         shoppingCart.setUser(new User());
 
+        Long userId = 1L;
+
         ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
-                .setId(1L).setUser_id(new User().getId()).setCartItemsIds(List.of(cartItemId));
+                .setId(1L).setUserId(new User().getId()).setCartItemsIds(List.of(cartItemId));
 
         when(shoppingCartRepository.findShoppingCartByUserId(userId)).thenReturn(shoppingCart);
-        doNothing().when(cartItemRepository).delete(cartItemToDelete);
-        when(shoppingCartMapper.toDto(shoppingCart)).thenReturn(shoppingCartDto);
+        doNothing().when(cartItemRepository).deleteById(cartItemToDelete.getId());
         when(shoppingCartRepository.save(shoppingCart)).thenReturn(shoppingCart);
+        when(shoppingCartMapper.toDto(shoppingCart)).thenReturn(shoppingCartDto);
 
         ShoppingCartDto actualDto = shoppingCartService.deleteBookByCartItemId(cartItemId, userId);
 
         assertEquals(shoppingCartDto.getId(), actualDto.getId());
         verify(shoppingCartRepository, times(1)).findShoppingCartByUserId(userId);
-        verify(cartItemRepository, times(1)).delete(cartItemToDelete);
+        verify(cartItemRepository, times(1)).deleteById(cartItemToDelete.getId());
         verify(shoppingCartRepository, times(1)).save(shoppingCart);
         verify(shoppingCartMapper, times(1)).toDto(shoppingCart);
         verifyNoMoreInteractions(shoppingCartRepository, shoppingCartMapper,
@@ -327,11 +330,6 @@ class ShoppingCartServiceTest {
     @Test
     @DisplayName("Verify updateBookQuantityByCartItemId() method works correctly")
     void updateBookQuantityByCartItemId_ValidCreateCartItemRequestDto_ReturnsShoppingCartDto() {
-        Long cartItemId = 2L;
-        Long userId = 1L;
-        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
-                2L, 5, 2L);
-
         Book book = new Book();
         book.setId(2L);
         book.setTitle("Ukraine wins");
@@ -343,21 +341,28 @@ class ShoppingCartServiceTest {
 
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setId(2L);
-        Set<CartItem> cartItems = new HashSet<>();
         shoppingCart.setUser(new User());
+
         CartItem cartItemToUpdateQuantity = new CartItem();
         cartItemToUpdateQuantity.setId(2L);
         cartItemToUpdateQuantity.setBook(book);
         cartItemToUpdateQuantity.setQuantity(2);
         cartItemToUpdateQuantity.setShoppingCart(shoppingCart);
+
+        Set<CartItem> cartItems = new HashSet<>();
         cartItems.add(cartItemToUpdateQuantity);
         shoppingCart.setCartItems(cartItems);
 
         CartItem cartItemUpdatedQuantity = cartItemToUpdateQuantity;
         cartItemUpdatedQuantity.setQuantity(5);
 
+        Long cartItemId = 2L;
+        Long userId = 1L;
+        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
+                2L, 5, 2L);
+
         ShoppingCartDto shoppingCartDto = new ShoppingCartDto()
-                .setId(shoppingCart.getId()).setUser_id(shoppingCart.getUser().getId())
+                .setId(shoppingCart.getId()).setUserId(shoppingCart.getUser().getId())
                 .setCartItemsIds(List.of(cartItemUpdatedQuantity.getId()));
 
         when(shoppingCartRepository.findShoppingCartByUserId(userId)).thenReturn(shoppingCart);
@@ -379,11 +384,6 @@ class ShoppingCartServiceTest {
     @Test
     @DisplayName("Verify updateBookQuantityByCartItemId() with wrong Id throws exception")
     void updateBookQuantityByCartItemId_NonValidCartItemId_ThrowsException() {
-        Long cartItemId = 10L;
-        Long userId = 1L;
-        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
-                2L, 5, 2L);
-
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setId(1L);
         Set<CartItem> cartItems = new HashSet<>();
@@ -392,6 +392,11 @@ class ShoppingCartServiceTest {
         cartItemToUpdate.setQuantity(3);
         cartItems.add(cartItemToUpdate);
         shoppingCart.setCartItems(cartItems);
+
+        Long cartItemId = 10L;
+        Long userId = 1L;
+        CreateCartItemRequestDto requestDto = new CreateCartItemRequestDto(
+                2L, 5, 2L);
 
         when(shoppingCartRepository.findShoppingCartByUserId(userId)).thenReturn(shoppingCart);
 

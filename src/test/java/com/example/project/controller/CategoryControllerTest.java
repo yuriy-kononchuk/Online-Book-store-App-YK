@@ -14,7 +14,6 @@ import com.example.project.dto.book.BookDto;
 import com.example.project.dto.category.CategoryDto;
 import com.example.project.dto.category.CreateCategoryRequestDto;
 import com.example.project.model.Category;
-import com.example.project.repository.CategoryRepository;
 import com.example.project.testrepository.TestCategoryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
