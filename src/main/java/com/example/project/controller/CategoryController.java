@@ -34,7 +34,7 @@ public class CategoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Create a new category", description = "Create a new category")
     @ApiResponse(responseCode = "201", description = "New category is successfully created")
     public CategoryDto createCategory(@RequestBody @Valid CreateCategoryRequestDto categoryDto) {
@@ -55,7 +55,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Update a category by ID", description = "Update a category by id")
     @ApiResponse(responseCode = "200", description = "Requested category was updated")
     public CategoryDto updateCategory(@PathVariable Long id,
@@ -64,10 +64,10 @@ public class CategoryController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a category by ID", description = "Delete a category by id")
-    @ApiResponse(responseCode = "404", description = "Requested category was deleted")
+    @ApiResponse(responseCode = "204", description = "Requested category was deleted")
     public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteById(id);
     }

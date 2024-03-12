@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderItemController {
     private final OrderItemService orderItemService;
 
-    @GetMapping("/{id}/items")
+    @GetMapping("/{orderId}/items")
     @Operation(summary = "Get a list of items by order ID",
             description = "Get a user's list of all items by order id")
     public List<OrderItemDto> getItemsByOrderId(@PathVariable Long orderId,

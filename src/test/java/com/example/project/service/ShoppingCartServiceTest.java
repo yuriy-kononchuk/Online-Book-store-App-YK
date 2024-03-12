@@ -290,7 +290,6 @@ class ShoppingCartServiceTest {
 
         when(shoppingCartRepository.findShoppingCartByUserId(userId)).thenReturn(shoppingCart);
         doNothing().when(cartItemRepository).deleteById(cartItemToDelete.getId());
-        when(shoppingCartRepository.save(shoppingCart)).thenReturn(shoppingCart);
         when(shoppingCartMapper.toDto(shoppingCart)).thenReturn(shoppingCartDto);
 
         ShoppingCartDto actualDto = shoppingCartService.deleteBookByCartItemId(cartItemId, userId);
@@ -298,7 +297,6 @@ class ShoppingCartServiceTest {
         assertEquals(shoppingCartDto.getId(), actualDto.getId());
         verify(shoppingCartRepository, times(1)).findShoppingCartByUserId(userId);
         verify(cartItemRepository, times(1)).deleteById(cartItemToDelete.getId());
-        verify(shoppingCartRepository, times(1)).save(shoppingCart);
         verify(shoppingCartMapper, times(1)).toDto(shoppingCart);
         verifyNoMoreInteractions(shoppingCartRepository, shoppingCartMapper,
                 cartItemRepository);

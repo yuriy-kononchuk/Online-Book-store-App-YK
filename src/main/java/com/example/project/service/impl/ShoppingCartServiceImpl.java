@@ -59,6 +59,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             cartItems.add(addedCartItem);
         } else {
             cartItemExist.setQuantity(cartItemExist.getQuantity() + cartItemRequestDto.quantity());
+            cartItemRepository.save(cartItemExist);
         }
         shoppingCartRepository.save(shoppingCartByUserId);
         return shoppingCartMapper.toDto(shoppingCartByUserId);
@@ -74,7 +75,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElseThrow(() -> new EntityNotFoundException("Can't find a cart item"));
         cartItems.remove(cartItemToDelete);
         cartItemRepository.deleteById(cartItemToDelete.getId());
-        return shoppingCartMapper.toDto(shoppingCartRepository.save(shoppingCartByUserId));
+        return shoppingCartMapper.toDto(shoppingCartByUserId);
     }
 
     @Override

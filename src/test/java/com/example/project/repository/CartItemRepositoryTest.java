@@ -16,8 +16,10 @@ import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(scripts = "classpath:database/shoppingcart/add-test-user-and-shopping-cart-items-set.sql",
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {
+        "classpath:database/shoppingcart/delete-test-user-set.sql",
+        "classpath:database/shoppingcart/add-test-user-and-shopping-cart-items-set.sql"
+        }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "classpath:database/shoppingcart/delete-test-user-set.sql",
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class CartItemRepositoryTest {

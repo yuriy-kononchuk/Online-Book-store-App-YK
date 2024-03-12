@@ -89,8 +89,10 @@ class ShoppingCartControllerTest {
 
     @WithUserDetails("testuser@test.com")
     @Test
-    @Sql(scripts = "classpath:database/shoppingcart/add-test-user-set.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {
+            "classpath:database/shoppingcart/delete-test-user-set.sql",
+            "classpath:database/shoppingcart/add-test-user-set.sql"
+            }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/shoppingcart/delete-test-user-set.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Add quantity to existing book in shopping cart is successful")

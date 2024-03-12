@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.example.project.model.ShoppingCart;
 import com.example.project.model.User;
+import com.example.project.testrepository.TestShoppingCartRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import org.springframework.test.context.jdbc.Sql;
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class ShoppingCartRepositoryTest {
     @Autowired
-    private ShoppingCartRepository shoppingCartRepository;
+    private TestShoppingCartRepository shoppingCartRepository;
 
     @Test
     @DisplayName("Get a shopping cart by user Id")

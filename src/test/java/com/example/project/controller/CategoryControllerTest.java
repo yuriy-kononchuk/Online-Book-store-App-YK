@@ -46,7 +46,7 @@ class CategoryControllerTest {
     @Autowired
     private TestCategoryRepository testCategoryRepository;
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @DisplayName("Create a new category is successful")
     void createCategory_ValidRequestDto_Success() throws Exception {
@@ -70,7 +70,7 @@ class CategoryControllerTest {
         EqualsBuilder.reflectionEquals(expected, actual, "id");
     }
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @DisplayName("Get All categories")
     void getAll_ReturnsListAllCategoryDtos() throws Exception {
@@ -93,7 +93,7 @@ class CategoryControllerTest {
         assertEquals(expected, Arrays.stream(actual).toList());
     }
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @DisplayName("Get category by Id")
     void getCategoryById_GivenValidId_ReturnsCategory() throws Exception {
@@ -113,7 +113,7 @@ class CategoryControllerTest {
         assertEquals("programming languages", actual.getDescription());
     }
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @DisplayName("Update category by Id is successful")
     void updateCategory_ValidCreateCategoryDto_Success() throws Exception {
@@ -138,7 +138,7 @@ class CategoryControllerTest {
         assertEquals(requestDto.description(), actual.getDescription());
     }
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @DisplayName("Delete category by Id is successful")
     void deleteCategory_ValidCategoryId_Success() throws Exception {
@@ -155,7 +155,7 @@ class CategoryControllerTest {
         assertEquals(2, categories.size());
     }
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @Sql(scripts = {
             "classpath:database/categories/add-test-categories.sql",

@@ -33,7 +33,7 @@ public class AuthenticationController {
         return userService.register(request);
     }
 
-    @PostMapping("/api/auth/login")
+    @PostMapping("/login")
     @Operation(summary = "Be able to login a user", description = "Login a user")
     @ApiResponse(responseCode = "200", description = "User is successfully logged in")
     public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto request) {

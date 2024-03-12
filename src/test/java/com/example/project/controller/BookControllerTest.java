@@ -43,7 +43,7 @@ class BookControllerTest {
     @Autowired
     private TestBookRepository testBookRepository;
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @Sql(scripts = "classpath:database/books/remove-test-books-from-books-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -82,7 +82,7 @@ class BookControllerTest {
         assertEquals(expected.getCategoryIds(), actual.getCategoryIds());
     }
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @Sql(scripts = "classpath:database/books/add-test-books-to-books-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -116,7 +116,7 @@ class BookControllerTest {
         assertEquals(expected, Arrays.stream(actual).toList());
     }
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @Sql(scripts = {
             "classpath:database/books/add-test-books-to-books-table.sql",
@@ -151,7 +151,7 @@ class BookControllerTest {
         assertEquals(List.of(1L), actual.getCategoryIds());
     }
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @Sql(scripts = "classpath:database/books/add-test-books-to-books-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -172,7 +172,7 @@ class BookControllerTest {
         assertEquals(2, books.size());
     }
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @Sql(scripts = {
             "classpath:database/books/add-test-books-to-books-table.sql",
@@ -215,7 +215,7 @@ class BookControllerTest {
         assertEquals(requestDto.getCoverImage(), updatedBook.getCoverImage());
     }
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @Test
     @Sql(scripts = {
             "classpath:database/books/add-test-books-to-books-table.sql",

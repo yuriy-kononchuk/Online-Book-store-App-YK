@@ -59,7 +59,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(value = {RegistrationException.class})
     protected ResponseEntity<Object> handleRegistrationException(
-            EntityNotFoundException ex,
+            RegistrationException ex,
             WebRequest request
     ) {
         Map<String, Object> bodyToResponce = new LinkedHashMap<>();
@@ -68,5 +68,18 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         bodyToResponce.put("error", ex.getClass() + " Unauthorized access");
         bodyToResponce.put("message", ex.getMessage());
         return new ResponseEntity<>(bodyToResponce, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(value = {DataNotFoundException.class})
+    protected ResponseEntity<Object> handleDataNotFoundException(
+            DataNotFoundException ex,
+            WebRequest request
+    ) {
+        Map<String, Object> bodyToResponce = new LinkedHashMap<>();
+        bodyToResponce.put("timestamp", LocalDateTime.now());
+        bodyToResponce.put("status", HttpStatus.NOT_FOUND.value());
+        bodyToResponce.put("error", ex.getClass() + " Not Found");
+        bodyToResponce.put("message", ex.getMessage());
+        return new ResponseEntity<>(bodyToResponce, HttpStatus.NOT_FOUND);
     }
 }
