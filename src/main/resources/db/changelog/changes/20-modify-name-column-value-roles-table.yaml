@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: modify-name-column-value-role-admin
+      author: Yuriy Kononchuk
+      changes:
+        - update:
+            tableName: roles
+            columns:
+              - column: {name: name, value: "ADMIN"}
+            where: id = 1
+  - changeSet:
+      id: modify-name-column-value-role-user
+      author: Yuriy Kononchuk
+      changes:
+        - update:
+            tableName: roles
+            columns:
+              - column: {name: name, value: "USER"}
+            where:  id = 2
+
+

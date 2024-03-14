@@ -1,5 +1,6 @@
 package com.example.project.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,7 +27,7 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @Data
-@SQLDelete(sql = "UPDATE books SET is_deleted = TRUE WHERE id = ?")
+@SQLDelete(sql = "UPDATE orders SET is_deleted = TRUE WHERE id = ?")
 @Where(clause = "is_deleted = FALSE")
 @Table(name = "orders")
 @NoArgsConstructor
@@ -54,7 +55,7 @@ public class Order {
     @NotNull
     @Column(name = "shipping_address", nullable = false)
     private String shippingAddress;
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST) // added cascade
     private Set<OrderItem> orderItems = new HashSet<>();
     @Column(nullable = false)
     private boolean isDeleted = false;
@@ -70,7 +71,7 @@ public class Order {
     public enum Status {
         CREATED,
         PENDING,
-        DELIVERED,
+        DELIVERING,
         COMPLETED
     }
 }

@@ -34,7 +34,7 @@ public class CategoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Create a new category", description = "Create a new category")
     @ApiResponse(responseCode = "201", description = "New category is successfully created")
     public CategoryDto createCategory(@RequestBody @Valid CreateCategoryRequestDto categoryDto) {
@@ -55,17 +55,19 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Update a category by ID", description = "Update a category by id")
     @ApiResponse(responseCode = "200", description = "Requested category was updated")
-    public CategoryDto updateCategory(@PathVariable Long id, CreateCategoryRequestDto categoryDto) {
+    public CategoryDto updateCategory(@PathVariable Long id,
+                                      @RequestBody CreateCategoryRequestDto categoryDto) {
         return categoryService.update(id, categoryDto);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Delete a category by ID", description = "Delete a category by id")
-    @ApiResponse(responseCode = "404", description = "Requested category was deleted")
+    @ApiResponse(responseCode = "204", description = "Requested category was deleted")
     public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteById(id);
     }
@@ -76,5 +78,4 @@ public class CategoryController {
     public List<BookDto> getBooksByCategoryId(@PathVariable Long id) {
         return bookService.findAllByCategoryId(id);
     }
-
 }

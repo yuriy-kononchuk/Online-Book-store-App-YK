@@ -14,21 +14,21 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
     private static final String KEY_AUTHOR = "author";
     private static final String KEY_ISBN = "isbn";
     private static final String KEY_TITLE = "title";
-    private SpecificationProviderManager<Book> bookSpecificationProviderManager;
+    private final SpecificationProviderManager<Book> bookSpecificationProviderManager;
 
     @Override
     public Specification<Book> build(BookSearchParameters searchParameters) {
         Specification<Book> spec = Specification.where(null);
         if (searchParameters.titles() != null && searchParameters.titles().length > 0) {
-            spec.and(bookSpecificationProviderManager.getSpecificationProvider(KEY_TITLE)
+            spec = spec.and(bookSpecificationProviderManager.getSpecificationProvider(KEY_TITLE)
                     .getSpecification(searchParameters.titles()));
         }
         if (searchParameters.authors() != null && searchParameters.authors().length > 0) {
-            spec.and(bookSpecificationProviderManager.getSpecificationProvider(KEY_AUTHOR)
+            spec = spec.and(bookSpecificationProviderManager.getSpecificationProvider(KEY_AUTHOR)
                     .getSpecification(searchParameters.authors()));
         }
         if (searchParameters.isbnNumbers() != null && searchParameters.isbnNumbers().length > 0) {
-            spec.and(bookSpecificationProviderManager.getSpecificationProvider(KEY_ISBN)
+            spec = spec.and(bookSpecificationProviderManager.getSpecificationProvider(KEY_ISBN)
                     .getSpecification(searchParameters.isbnNumbers()));
         }
         return spec;

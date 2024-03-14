@@ -31,4 +31,16 @@ databaseChangeLog:
       file: db/changelog/changes/15-add-order-table.yaml
   - include:
       file: db/changelog/changes/16-add-orderitem-table.yaml
+  - include:
+      file: db/changelog/changes/17-modify-quantity-column-type.yaml
+  - include:
+      file: db/changelog/changes/18-rename-table-names.yaml
+  - include:
+      file: db/changelog/changes/19-modify-price-column-type.yaml
+  - include:
+      file: db/changelog/changes/20-modify-name-column-value-roles-table.yaml
+  - include:
+      file: db/changelog/changes/21-insert-shoppingcart-users.yaml
+  - include:
+      file: db/changelog/changes/22-modify-total-column-type.yaml
 

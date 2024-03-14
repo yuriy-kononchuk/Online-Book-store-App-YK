@@ -44,7 +44,8 @@ public class BookController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     @Operation(summary = "Create a new book", description = "Create a new book")
     @ApiResponse(responseCode = "201", description = "New book successfully created")
@@ -53,7 +54,7 @@ public class BookController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete Book by ID", description = "Delete a book by id")
     @ApiResponse(responseCode = "204", description = "No book found to delete")
@@ -61,12 +62,13 @@ public class BookController {
         bookService.deleteById(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Update Book by ID", description = "Update a book by id")
     @ApiResponse(responseCode = "200", description = "Requested book was updated")
-    public void updateBookById(@PathVariable Long id) {
-        bookService.updateById(id);
+    public void updateBookById(@PathVariable Long id,
+                               @RequestBody CreateBookRequestDto requestDto) {
+        bookService.updateById(id, requestDto);
     }
 
     @GetMapping("/search")

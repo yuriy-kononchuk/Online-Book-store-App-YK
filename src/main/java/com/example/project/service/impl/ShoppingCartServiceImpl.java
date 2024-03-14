@@ -46,13 +46,22 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                                                  CreateCartItemRequestDto cartItemRequestDto) {
         ShoppingCart shoppingCartByUserId = shoppingCartRepository.findShoppingCartByUserId(userId);
         Set<CartItem> cartItems = shoppingCartByUserId.getCartItems();
-        CartItem cartItem = cartItemMapper.toEntity(cartItemRequestDto);
-        if (!cartItems.contains(cartItem)) {
-            cartItems.add(cartItem);
+
+        CartItem cartItemExist = cartItems.stream()
+                .filter(item -> item.getBook().getId().equals(cartItemRequestDto.bookId()))
+                .findAny()
+                .orElse(null);
+
+        if (cartItemExist == null) {
+            CartItem addedCartItem = cartItemRepository.save(
+                    cartItemMapper.toEntity(cartItemRequestDto));
+            addedCartItem.setShoppingCart(shoppingCartByUserId);
+            cartItems.add(addedCartItem);
         } else {
-            cartItem.setQuantity(cartItem.getQuantity() + cartItemRequestDto.quantity());
+            cartItemExist.setQuantity(cartItemExist.getQuantity() + cartItemRequestDto.quantity());
+            cartItemRepository.save(cartItemExist);
         }
-        cartItemRepository.save(cartItem);
+        shoppingCartRepository.save(shoppingCartByUserId);
         return shoppingCartMapper.toDto(shoppingCartByUserId);
     }
 
@@ -61,11 +70,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCartByUserId = shoppingCartRepository.findShoppingCartByUserId(userId);
         Set<CartItem> cartItems = shoppingCartByUserId.getCartItems();
         CartItem cartItemToDelete = shoppingCartByUserId.getCartItems().stream()
-                .filter(id -> id.equals(cartItemId))
+                .filter(item -> item.getId().equals(cartItemId))
                 .findAny()
                 .orElseThrow(() -> new EntityNotFoundException("Can't find a cart item"));
         cartItems.remove(cartItemToDelete);
-        cartItemRepository.delete(cartItemToDelete);
+        cartItemRepository.deleteById(cartItemToDelete.getId());
         return shoppingCartMapper.toDto(shoppingCartByUserId);
     }
 
@@ -74,7 +83,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             Long cartItemId, CreateCartItemRequestDto cartItemRequestDto, Long userId) {
         ShoppingCart shoppingCartByUserId = shoppingCartRepository.findShoppingCartByUserId(userId);
         CartItem cartItemToUpdate = shoppingCartByUserId.getCartItems().stream()
-                .filter(id -> id.equals(cartItemId))
+                .filter(item -> item.getId().equals(cartItemId))
                 .findAny()
                 .orElseThrow(() -> new EntityNotFoundException("Can't find a cart item"));
         cartItemToUpdate.setQuantity(cartItemRequestDto.quantity());

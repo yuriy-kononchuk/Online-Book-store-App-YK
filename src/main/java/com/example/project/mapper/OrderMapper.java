@@ -14,7 +14,6 @@ import org.mapstruct.Named;
 
 @Mapper(config = MapperConfig.class)
 public interface OrderMapper {
-
     @Mapping(source = "user.id", target = "userId")
     @Mapping(target = "orderItemsIds", ignore = true)
     OrderDto toDto(Order order);

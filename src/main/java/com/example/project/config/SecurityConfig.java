@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableMethodSecurity
 @Configuration
@@ -36,8 +37,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/auth/**", "/register/**", "/error",
-                                        "/swagger-ui/**")
+                                .requestMatchers(
+                                        new AntPathRequestMatcher("/api/auth/**"),
+                                        new AntPathRequestMatcher("/error"),
+                                        new AntPathRequestMatcher("/swagger-ui/**")
+                                )
                                 .permitAll().anyRequest()
                                 .authenticated()
                 )

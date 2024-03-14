@@ -14,7 +14,7 @@ public class ShoppingCartMapperImpl implements ShoppingCartMapper {
         }
         ShoppingCartDto dto = new ShoppingCartDto();
         dto.setId(shoppingCart.getId());
-        dto.setUser(shoppingCart.getUser());
+        dto.setUserId(shoppingCart.getUser().getId());
         setCartItemsIds(dto, shoppingCart);
 
         return dto;

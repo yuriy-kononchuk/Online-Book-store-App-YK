@@ -22,21 +22,21 @@ public interface BookMapper {
     BookDto toDto(Book book);
 
     @AfterMapping
-    default void setCategoryIds(@MappingTarget BookDto bookDto, Book book) { // added
+    default void setCategoryIds(@MappingTarget BookDto bookDto, Book book) {
         List<Long> categoryIds = book.getCategories().stream()
                 .map(Category::getId)
                 .toList();
         bookDto.setCategoryIds(categoryIds);
     }
 
-    BookDtoWithoutCategoryIds toDtoWithoutCategories(Book book); // added
+    BookDtoWithoutCategoryIds toDtoWithoutCategories(Book book);
 
     @Mapping(target = "categories", ignore = true)
-    Book toEntity(CreateBookRequestDto booktDto);
+    Book toEntity(CreateBookRequestDto requestDto);
 
     @AfterMapping
-    default void setCategories(@MappingTarget Book book, CreateBookRequestDto booktDto) { // added
-        Set<Category> categories = booktDto.getCategoryIds().stream()
+    default void setCategories(@MappingTarget Book book, CreateBookRequestDto requestDto) {
+        Set<Category> categories = requestDto.getCategoryIds().stream()
                 .map(Category::new)
                 .collect(Collectors.toSet());
         book.setCategories(categories);

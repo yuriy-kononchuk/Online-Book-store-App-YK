@@ -1,5 +1,6 @@
 package com.example.project.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Data
-@SQLDelete(sql = "UPDATE books SET is_deleted = TRUE WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET is_deleted = TRUE WHERE id = ?")
 @Where(clause = "is_deleted = FALSE")
 @Table(name = "users")
 @NoArgsConstructor
@@ -46,14 +47,14 @@ public class User implements UserDetails {
     private String lastName;
     @Column(name = "shipping_address")
     private String shippingAddress;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
-    @NotNull
+    //@NotNull
     @OneToOne(mappedBy = "user")
     private ShoppingCart shoppingCart;
     @OneToMany(mappedBy = "user")

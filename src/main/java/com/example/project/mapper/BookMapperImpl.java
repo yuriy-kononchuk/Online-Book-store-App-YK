@@ -22,7 +22,7 @@ public class BookMapperImpl implements BookMapper {
         dto.setDescription(book.getDescription());
         dto.setCoverImage(book.getCoverImage());
 
-        setCategoryIds(dto, book); // added
+        setCategoryIds(dto, book);
 
         return dto;
     }

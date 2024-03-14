@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: modify-total-column-type-order
+      author: Yuriy Kononchuk
+      changes:
+        - modifyDataType:
+            tableName: orders
+            columnName: total
+            newDataType: decimal(10,2)
